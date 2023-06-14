@@ -1,9 +1,5 @@
-import { Schema, Model, model } from 'mongoose'
-import { IUser } from './user.interface'
-
-type UserModel = {
-  myStaticMethod(): number
-} & Model<IUser>
+import { Schema, model } from 'mongoose';
+import { IUser, UserModel } from './user.interface';
 
 const userSchema = new Schema<IUser, UserModel>(
   {
@@ -21,9 +17,14 @@ const userSchema = new Schema<IUser, UserModel>(
       required: true,
     },
   },
-  { timestamps: true }
-)
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+  }
+);
 
-const User = model<IUser, UserModel>('users', userSchema)
+const User = model<IUser, UserModel>('users', userSchema);
 
-export default User
+export default User;

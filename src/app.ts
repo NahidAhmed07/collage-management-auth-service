@@ -1,19 +1,39 @@
-import express, { Application, NextFunction, Request, Response } from 'express'
-import cors from 'cors'
+import express, { Application, NextFunction, Response, Request } from 'express';
+import cors from 'cors';
 
-import userRoute from './app/modules/users/user.route'
-const app: Application = express()
+import globalErrorHandler from './app/middleware/globalErrorHandler';
 
-app.use(cors())
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+import routes from './app/routes';
+import httpStatus from 'http-status';
+
+const app: Application = express();
+
+// custom Error class
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Application routes
-app.use('/api/v1/users', userRoute)
+app.use('/api/v1', routes);
 
-app.get('/', (req: Request, res: Response, next: NextFunction) => {
-  // res.send('Hello World!')
-  next('Error')
-})
+// Global error handler
+app.use(globalErrorHandler);
 
-export default app
+// not found route handler
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(httpStatus.NOT_FOUND).json({
+    success: false,
+    message: 'not found',
+    errorMessages: [
+      {
+        message: 'not found',
+        path: req.originalUrl,
+      },
+    ],
+  });
+
+  next();
+});
+
+export default app;
