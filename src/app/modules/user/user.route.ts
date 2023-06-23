@@ -6,9 +6,15 @@ import { UserValidator } from './user.validation';
 const userRouter = express.Router();
 
 userRouter.post(
-  '/create-user',
-  validateRequest(UserValidator.CreateUserZodSchema),
-  userController.createUser
+  '/create-student',
+  validateRequest(UserValidator.CreateStudentZodSchema),
+  userController.createStudent
+);
+
+userRouter.post(
+  '/create-faculty',
+  validateRequest(UserValidator.createFacultyZodSchema),
+  userController.createFaculty
 );
 
 export default userRouter;

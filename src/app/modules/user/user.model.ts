@@ -11,10 +11,19 @@ const userSchema = new Schema<IUser, UserModel>(
     password: {
       type: String,
       required: true,
+      select: false,
     },
     role: {
       type: String,
       required: true,
+    },
+    student: {
+      type: Schema.Types.ObjectId,
+      ref: 'students',
+    },
+    faculty: {
+      type: Schema.Types.ObjectId,
+      ref: 'faculties',
     },
   },
   {
