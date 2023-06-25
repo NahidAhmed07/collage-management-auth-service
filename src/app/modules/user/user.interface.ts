@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 import { Model, Types } from 'mongoose';
 import { IStudent } from '../student/student.interface';
 import { IFaculty } from '../faculty/faculty.interface';
+import { IAdmin } from '../admin/admin.interface';
 
 export type IUser = {
   id: string;
@@ -8,6 +10,11 @@ export type IUser = {
   password: string;
   student?: Types.ObjectId | IStudent;
   faculty?: Types.ObjectId | IFaculty;
+  admin?: Types.ObjectId | IAdmin;
+  needsPasswordChange?: boolean;
 };
 
-export type UserModel = Model<IUser, Record<string, unknown>>;
+export type UserModel = {
+  isUserExisted(id: string): IUser | null;
+  isPasswordMatched(password: string, hashPassword: string): boolean;
+} & Model<IUser>;

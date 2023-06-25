@@ -17,4 +17,10 @@ userRouter.post(
   userController.createFaculty
 );
 
+userRouter.post(
+  '/create-admin',
+  validateRequest(UserValidator.createAdminZodSchema),
+  userController.createAdmin
+);
+
 export default userRouter;
